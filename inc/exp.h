@@ -1,22 +1,29 @@
 #ifndef EXP_H
 #define EXP_H
+#include <string>
 #include <vector>
+using std::string;
 using std::vector;
 
+/**
+ * [Interpreter Pattern - Abstract Expression]
+ * The abstract class of expression. Provide an
+ * interface 'evaluate' to get the result from
+ * prolog expression.
+ */
 template <class T>
 class Iterator;
 class Exp
 {
 public:
   virtual bool evaluate() = 0;
-  int degree();
-  Exp *child(int index);
+  string symbol();
   virtual Iterator<Exp *> *createIterator();
-  Iterator<Exp *> *createRightRecursiveIterator();
+  Iterator<Exp *> *createClauseIterator();
 
 protected:
-  Exp(vector<Exp *> exps);
-  vector<Exp *> _exps;
+  Exp(string symbol);
+  string _symbol;
 };
 
 #endif

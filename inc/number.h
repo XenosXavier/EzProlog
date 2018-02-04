@@ -3,6 +3,10 @@
 #include "constant.h"
 #include <sstream>
 
+/**
+ * [Composite Pattern - Leaf]
+ * Number is a constant in prolog data objects.
+ */
 class Number : public Constant
 {
 public:

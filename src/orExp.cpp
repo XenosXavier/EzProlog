@@ -1,16 +1,30 @@
 #include "../inc/orExp.h"
-#include "../inc/expIterator.h"
+#include "../inc/orExpIterator.h"
 
-OrExp::OrExp(Exp *left, Exp *right) : Exp({left, right})
+OrExp::OrExp(Exp *left, Exp *right) : Exp(";"), _left(left), _right(right)
 {
 }
 
+// Returns true if any expression(left or right) is true.
 bool OrExp::evaluate()
 {
-    return (_exps[0]->evaluate() || _exps[1]->evaluate());
+    return (_left->evaluate() || _right->evaluate());
 }
 
+// Create an OrExpIterator.
 Iterator<Exp *> *OrExp::createIterator()
 {
-    return new ExpIterator(this);
+    return new OrExpIterator(this);
+}
+
+// Get the left expression.
+Exp *OrExp::left()
+{
+    return _left;
+}
+
+// Get the right expression.
+Exp *OrExp::right()
+{
+    return _right;
 }

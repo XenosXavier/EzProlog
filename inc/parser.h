@@ -5,6 +5,14 @@
 #include "termFactory.h"
 #include <gtest/gtest_prod.h>
 
+/**
+ * [Builder Pattern - Client]
+ * The ez-prolog parser. Create the term factory for 
+ * each clauses, convert the token to corresponding
+ * node and then add it into expression builder.
+ * Finally use buildExpTree to create an expression
+ * tree for ez-prolog.
+ */
 class Parser
 {
 public:
@@ -34,6 +42,8 @@ private:
   Term *createTail();
   bool hasNextArg();
   bool isTermToken();
+  bool isEndOfQuery();
+  bool isLegalQuery();
 
   Scanner &_scanner;
   ExpBuilder &_expBuilder;

@@ -1,29 +1,25 @@
 #include "../inc/exp.h"
 #include "../inc/nullIterator.h"
-#include "../inc/rightRecursiveIterator.h"
+#include "../inc/clauseIterator.h"
 
-int Exp::degree()
+// Returns the symbol(operator) of this expression.
+string Exp::symbol()
 {
-    return _exps.size();
+    return _symbol;
 }
 
-Exp *Exp::child(int index)
-{
-    if (index > degree())
-        throw string("The child index is out of range");
-    return _exps[index];
-}
-
+// Create an iterator for this expression.
 Iterator<Exp *> *Exp::createIterator()
 {
     return new NullIterator<Exp *>();
 }
 
-Iterator<Exp *> *Exp::createRightRecursiveIterator()
+// Create an clause iterator for this expression.
+Iterator<Exp *> *Exp::createClauseIterator()
 {
-    return new RightRecursiveIterator<Exp *>(createIterator());
+    return new ClauseIterator(createIterator());
 }
 
-Exp::Exp(vector<Exp *> exps) : _exps(exps)
+Exp::Exp(string symbol) : _symbol(symbol)
 {
 }

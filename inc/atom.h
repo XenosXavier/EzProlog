@@ -2,10 +2,14 @@
 #define ATOM_H
 #include "constant.h"
 
+/**
+ * [Composite Pattern - Leaf]
+ * Atom is a constant in prolog data objects.
+ */
 class Atom : public Constant
 {
-  public:
-    Atom(string symbol);
+public:
+  Atom(string symbol);
 };
 
 #endif

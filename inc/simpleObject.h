@@ -2,6 +2,10 @@
 #define SIMPLE_OBJECT
 #include "term.h"
 
+/**
+ * Simple object is a term of prolog data objects.
+ * It is not a compound object.
+ */
 class SimpleObject : public Term
 {
 public:

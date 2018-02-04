@@ -7,6 +7,12 @@
 #include <gtest/gtest_prod.h>
 using std::stack;
 
+/**
+ * [Builder Pattern - Builder]
+ * This is a bottom-up expression builder. 
+ * It will try to create a tail recursion expression tree 
+ * in buildExpTree and get the result from the getExpTree.
+ */
 class ExpBuilder
 {
 public:

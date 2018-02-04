@@ -5,6 +5,11 @@
 using std::map;
 using std::string;
 
+/**
+ * [Singleton Pattern]
+ * The ez-prolog utility.
+ * Provide some utility method and const.
+ */
 class PrologUtils
 {
 public:

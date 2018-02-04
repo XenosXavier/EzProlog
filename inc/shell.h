@@ -4,6 +4,12 @@
 #include "scanner.h"
 #include "expBuilder.h"
 
+/**
+ * The ez-prolog shell.
+ * Provide a console interface for user
+ * to input query and get the response
+ * from ez-prolog.
+ */
 class Shell
 {
 public:
@@ -14,12 +20,15 @@ private:
   void interpret();
   void compile();
   void reply(Exp *expTree, Parser *parser);
-  void iterateClause(Iterator<Exp *> *it, Parser *parser);
-  void createAnswer(vector<Variable *> variables, bool &isFirstOne);
-  void output(string text, int crlf, bool isRed = false);
+  void showResult(Iterator<Exp *> *it, Parser *parser);
+  string getClauseAnswer(vector<Variable *> variables);
+  string getEquivalent(Variable *variable);
+  string convertToBrackets(Structure *compound);
+  bool isBracketsCompound(Structure *compound);
+  void output(string text, bool isRed = false);
 
   bool _isHalt;
-  string _query; // user query
+  string _query;
 };
 
 #endif

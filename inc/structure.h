@@ -5,12 +5,18 @@
 #include <gtest/gtest_prod.h>
 using std::vector;
 
+/**
+ * [Composite Pattern - Composite]
+ * Structure is a compound object in prolog data objects.
+ * Each structure must have a functor which is an atom and
+ * may contain some arguments(terms) or not.
+ */
 class Structure : public Term
 {
 public:
   Structure(Atom *functor, vector<Term *> args);
   string symbol() const;
-  string value() const;
+  string value();
   bool match(Term *term);
   Structure *getStructure();
   Atom *functor() const;

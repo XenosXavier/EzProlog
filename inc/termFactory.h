@@ -7,6 +7,12 @@
 #include <gtest/gtest_prod.h>
 using std::map;
 
+/**
+ * [Flyweight Pattern - Flyweight Factory]
+ * Return a term from table(map) if it has
+ * already been created, otherwise create
+ * a new one and then add it into its table.
+ */
 class TermFactory
 {
   friend class Parser;
@@ -30,8 +36,8 @@ private:
 
   map<string, Atom *> _atomTable;
   map<string, Number *> _numberTable;
-  map<string, Variable *> _variableTable;
   map<string, Structure *> _structureTable;
+  map<string, Variable *> _variableTable;
 };
 
 #endif
