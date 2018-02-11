@@ -57,7 +57,7 @@ void Shell::reply(Exp *expTree, Parser *parser)
     if (expTree->evaluate()) // Show result if query is true.
         showResult(expTree->createClauseIterator(), parser);
     else // Otherwise display 'false' on console.
-        output("false\n\n", true);
+        output("false.\n\n", true);
 }
 
 // Show all clause results of user query.

@@ -16,9 +16,9 @@
 
 int main(int argc, char **argv)
 {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-    // Shell shell;
-    // shell.run();
-    // return 0;
+    // testing::InitGoogleTest(&argc, argv);
+    // return RUN_ALL_TESTS();
+    Shell shell;
+    shell.run();
+    return 0;
 }
