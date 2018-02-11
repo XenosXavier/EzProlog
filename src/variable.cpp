@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 
-Variable::Variable(string symbol) : SimpleObject(symbol), _hasVisited(false), _instance(nullptr), _head(this)
+Variable::Variable(string symbol, int age) : SimpleObject(symbol), _hasVisited(false), _age(age), _instance(nullptr), _head(this)
 {
 }
 
@@ -35,6 +35,22 @@ bool Variable::match(Term *term)
     else // Assign instance to matching term.
         _instance = term;
     return true;
+}
+
+Variable *Variable::getVariable()
+{
+    return this;
+}
+
+int Variable::age()
+{
+    return _age;
+}
+
+// Get instance.
+Term *Variable::instance()
+{
+    return _instance;
 }
 
 // Returns true if detect any cycle.
@@ -80,7 +96,7 @@ vector<Variable *> Variable::createSharedVariables(Variable *head, Variable *oth
         shares.push_back(otherHead);
     // Sort the share variables by address.
     std::sort(shares.begin(), shares.end(), [](Variable *a, Variable *b) {
-        return a < b;
+        return a->age() < b->age();
     });
     return shares;
 }
@@ -94,21 +110,10 @@ Variable *Variable::lastSharedVariable()
     return lastOne;
 }
 
-Variable *Variable::getVariable()
-{
-    return this;
-}
-
 // Convert self instance to variable.
 Variable *Variable::convertInstanceToVariable()
 {
     if (_instance == nullptr)
         return nullptr;
     return _instance->getVariable();
-}
-
-// Get instance.
-Term *Variable::instance()
-{
-    return _instance;
 }

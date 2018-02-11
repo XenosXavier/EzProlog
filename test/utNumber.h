@@ -2,37 +2,42 @@
 #define UT_NUMBER_H
 #include "../inc/number.h"
 
-TEST(number, symbol)
+TEST(Number, symbol)
 {
     Number n1(-0.1);
     ASSERT_EQ("-0.1", n1.symbol());
 }
 
-TEST(number, value)
+TEST(Number, value)
 {
     Number n1(-0.1);
     ASSERT_EQ("-0.1", n1.value());
 }
 
-TEST(number, match)
+TEST(Number, matchSuccess)
+{
+    Number n1(-0.1);
+    Number n2(-0.1);
+    ASSERT_TRUE(n1.match(&n2));
+}
+
+TEST(Number, matchFail)
 {
     Number n1(-0.1);
     Number n2(0.1);
-    Number n3(-0.1);
     ASSERT_FALSE(n1.match(&n2));
-    ASSERT_TRUE(n1.match(&n3));
 }
 
-TEST(number, getStructure)
+TEST(Number, getStructure)
 {
     Number n1(-0.1);
-    ASSERT_FALSE(n1.getStructure());
+    ASSERT_EQ(nullptr, n1.getStructure());
 }
 
-TEST(number, getVariable)
+TEST(Number, getVariable)
 {
     Number n1(-0.1);
-    ASSERT_FALSE(n1.getVariable());
+    ASSERT_EQ(nullptr, n1.getVariable());
 }
 
 #endif

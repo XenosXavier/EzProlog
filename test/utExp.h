@@ -5,7 +5,7 @@
 #include "../inc/orExp.h"
 #include "../inc/atom.h"
 
-TEST(exp, matchingExp)
+TEST(Exp, matchingExp)
 {
     MatchingExp mexp(new Atom("tom"), new Atom("jerry"));
     ASSERT_FALSE(mexp.evaluate());
@@ -13,7 +13,7 @@ TEST(exp, matchingExp)
     ASSERT_TRUE(mexp2.evaluate());
 }
 
-TEST(exp, andExp)
+TEST(Exp, andExp)
 {
     MatchingExp mexp(new Atom("tom"), new Atom("jerry"));
     MatchingExp mexp2(new Atom("tom"), new Atom("tom"));
@@ -23,7 +23,7 @@ TEST(exp, andExp)
     ASSERT_TRUE(aexp2.evaluate());
 }
 
-TEST(exp, orExp)
+TEST(Exp, orExp)
 {
     MatchingExp mexp(new Atom("tom"), new Atom("jerry"));
     MatchingExp mexp2(new Atom("tom"), new Atom("tom"));

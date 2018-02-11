@@ -44,7 +44,7 @@ vector<Variable *> Parser::clauseVariables(int index)
     });
     // Sort the variables by those address.
     std::sort(variables.begin(), variables.end(), [](Variable *a, Variable *b) {
-        return a < b;
+        return a->age() < b->age();
     });
     return variables;
 }

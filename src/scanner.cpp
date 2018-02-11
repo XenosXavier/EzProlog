@@ -1,13 +1,13 @@
 #include "../inc/scanner.h"
 
-Scanner::Scanner(string context) : _context(context), _position(0), _prologUtils(PrologUtils::getInstance())
+Scanner::Scanner(string content) : _content(content), _position(0), _prologUtils(PrologUtils::getInstance())
 {
 }
 
-// Extract the next token from context.
+// Extract the next token from content.
 pair<int, string> Scanner::nextToken()
 {
-    if (skipLeadingWhiteSpace() >= _context.length())
+    if (skipLeadingWhiteSpace() >= _content.length())
         return pair<int, string>(_prologUtils->EOS, "");
     else if (isEndChar())
         return extractChar();
@@ -40,7 +40,7 @@ pair<int, string> Scanner::extractAtom()
     int begin = _position;
     for (; isalnum(currentChar()) || isdigit(currentChar()) || currentChar() == '_'; _position++)
         ;
-    return pair<int, string>(_prologUtils->ATOM, _context.substr(begin, _position - begin));
+    return pair<int, string>(_prologUtils->ATOM, _content.substr(begin, _position - begin));
 }
 
 // Extract the atom which is composed of prolog special characters.
@@ -50,7 +50,7 @@ pair<int, string> Scanner::extractAtomSC()
     int begin = _position;
     for (; _prologUtils->isSpecialChar(currentChar()) && !isEndChar(); _position++)
         ;
-    return pair<int, string>(_prologUtils->ATOM, _context.substr(begin, _position - begin));
+    return pair<int, string>(_prologUtils->ATOM, _content.substr(begin, _position - begin));
 }
 
 // Extract the atom between single quote.
@@ -58,8 +58,8 @@ pair<int, string> Scanner::extractAtomSC()
 pair<int, string> Scanner::extractAtomSQ()
 {
     int begin = ++_position;
-    _position = _context.find('\'', begin) + 1;
-    return pair<int, string>(_prologUtils->ATOM, _context.substr(begin, _position - begin - 1));
+    _position = _content.find('\'', begin) + 1;
+    return pair<int, string>(_prologUtils->ATOM, _content.substr(begin, _position - begin - 1));
 }
 
 // Extract the number.
@@ -70,7 +70,7 @@ pair<int, string> Scanner::extractNumber()
     bool hasPoint = false;
     for (; isNumberChar(hasPoint); _position++)
         ;
-    return pair<int, string>(_prologUtils->NUMBER, _context.substr(begin, _position - begin));
+    return pair<int, string>(_prologUtils->NUMBER, _content.substr(begin, _position - begin));
 }
 
 // Extract the variable(upper case of leading character).
@@ -80,13 +80,13 @@ pair<int, string> Scanner::extractVariable()
     int begin = _position;
     for (; isdigit(currentChar()) || isalnum(currentChar()) || currentChar() == '_'; _position++)
         ;
-    return pair<int, string>(_prologUtils->VAR, _context.substr(begin, _position - begin));
+    return pair<int, string>(_prologUtils->VAR, _content.substr(begin, _position - begin));
 }
 
 // Extract a character from now position.
 pair<int, string> Scanner::extractChar()
 {
-    char c = _context[_position++];
+    char c = _content[_position++];
     return pair<int, string>(c, string(1, c));
 }
 
@@ -99,15 +99,15 @@ int Scanner::position()
 // Get current character.
 char Scanner::currentChar()
 {
-    return _context[_position];
+    return _content[_position];
 }
 
 // Get next character.
 char Scanner::nextChar()
 {
-    if (_position + 1 > _context.length())
+    if (_position + 1 > _content.length())
         return '\0';
-    return _context[_position + 1];
+    return _content[_position + 1];
 }
 
 // Returns true if this character is a part of number.

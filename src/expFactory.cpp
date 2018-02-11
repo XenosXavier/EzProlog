@@ -4,7 +4,7 @@
 MatchingExp *ExpFactory::createMatchingExp(Term *left, Term *right)
 {
     if (left == nullptr || right == nullptr)
-        throw string("Missing a term of operator '='");
+        throw string("Uncompleted matching expression");
     return new MatchingExp(left, right);
 }
 
@@ -12,7 +12,7 @@ MatchingExp *ExpFactory::createMatchingExp(Term *left, Term *right)
 AndExp *ExpFactory::createAndExp(Exp *left, Exp *right)
 {
     if (left == nullptr || right == nullptr)
-        throw string("Missing an expression of operator ','");
+        throw string("Uncompleted conjunction expression");
     return new AndExp(left, right);
 }
 
@@ -20,6 +20,6 @@ AndExp *ExpFactory::createAndExp(Exp *left, Exp *right)
 OrExp *ExpFactory::createOrExp(Exp *left, Exp *right)
 {
     if (left == nullptr || right == nullptr)
-        throw string("Missing an expression of operator ';'");
+        throw string("Uncompleted disjunction expression");
     return new OrExp(left, right);
 }

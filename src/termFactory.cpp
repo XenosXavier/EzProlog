@@ -24,13 +24,15 @@ Number *TermFactory::createNumber(double value)
 Variable *TermFactory::createVariable(string key)
 {
     if (_variableTable.find(key) == _variableTable.end())
-        _variableTable[key] = new Variable(key);
+        _variableTable[key] = new Variable(key, _variableTable.size());
     return _variableTable[key];
 }
 
 // create a structure.
 Structure *TermFactory::createStructure(Atom *functor, vector<Term *> args)
 {
+    if (functor == nullptr)
+        throw string("Nonvalid functor of structure");
     string key = functor->symbol();
     for (int i = 0; i < args.size(); i++)
         key += ((i > 0) ? "," : "|") + args[i]->symbol();

@@ -12,12 +12,12 @@ using std::string;
  * Extract a simple object token each time
  * in nextToken. Provide client to peek the
  * current, next character and now position
- * of this context.
+ * of this content.
  */
 class Scanner
 {
 public:
-  Scanner(string context = "");
+  Scanner(string content = "");
   pair<int, string> nextToken();
   int position();
   char currentChar();
@@ -46,7 +46,8 @@ private:
   pair<int, string> extractChar();
   bool isNumberChar(bool &hasPoint);
   bool isEndChar();
-  string _context;
+
+  string _content;
   int _position;
   PrologUtils *_prologUtils;
 };

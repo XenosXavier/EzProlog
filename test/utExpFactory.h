@@ -3,77 +3,105 @@
 #include "../inc/expFactory.h"
 #include "../inc/atom.h"
 
-TEST(expFactory, matchingExpException)
+TEST(ExpFactory, matchingExpException)
 {
     ExpFactory expFactory;
     try
     {
         expFactory.createMatchingExp(nullptr, nullptr);
-        FAIL() << "It should throw 'Missing term before '='.'";
+        FAIL() << "It should throw 'Uncompleted matching expression'";
     }
     catch (const std::string &exception)
     {
-        ASSERT_EQ("Missing term before '='.", exception);
+        ASSERT_EQ("Uncompleted matching expression", exception);
     }
 
     try
     {
         expFactory.createMatchingExp(new Atom("tom"), nullptr);
-        FAIL() << "It should throw 'Missing term after '='.'";
+        FAIL() << "It should throw 'Uncompleted matching expression'";
     }
     catch (const std::string &exception)
     {
-        ASSERT_EQ("Missing term after '='.", exception);
+        ASSERT_EQ("Uncompleted matching expression", exception);
+    }
+
+    try
+    {
+        expFactory.createMatchingExp(nullptr, new Atom("tom"));
+        FAIL() << "It should throw 'Uncompleted matching expression'";
+    }
+    catch (const std::string &exception)
+    {
+        ASSERT_EQ("Uncompleted matching expression", exception);
     }
 }
 
-TEST(expFactory, andExpException)
+TEST(ExpFactory, andExpException)
 {
     ExpFactory expFactory;
     try
     {
         expFactory.createAndExp(nullptr, nullptr);
-        FAIL() << "It should throw 'Missing expression before ','.'";
+        FAIL() << "It should throw 'Uncompleted conjunction expression'";
     }
     catch (const std::string &exception)
     {
-        ASSERT_EQ("Missing expression before ','.", exception);
+        ASSERT_EQ("Uncompleted conjunction expression", exception);
     }
 
     try
     {
-        MatchingExp *m = new MatchingExp(new Atom("tom"), new Atom("tom"));
-        expFactory.createAndExp(m, nullptr);
-        FAIL() << "It should throw 'Missing expression after ','.'";
+        expFactory.createAndExp(new MatchingExp(new Atom("a"), new Atom("b")), nullptr);
+        FAIL() << "It should throw 'Uncompleted conjunction expression'";
     }
     catch (const std::string &exception)
     {
-        ASSERT_EQ("Missing expression after ','.", exception);
+        ASSERT_EQ("Uncompleted conjunction expression", exception);
+    }
+
+    try
+    {
+        expFactory.createAndExp(nullptr, new MatchingExp(new Atom("a"), new Atom("b")));
+        FAIL() << "It should throw 'Uncompleted conjunction expression'";
+    }
+    catch (const std::string &exception)
+    {
+        ASSERT_EQ("Uncompleted conjunction expression", exception);
     }
 }
 
-TEST(expFactory, orExpException)
+TEST(ExpFactory, orExpException)
 {
     ExpFactory expFactory;
     try
     {
-        expFactory.createOrExp(nullptr, nullptr);
-        FAIL() << "It should throw 'Missing expression before ';'.'";
+        expFactory.createOrExp(new MatchingExp(new Atom("a"), new Atom("b")), nullptr);
+        FAIL() << "It should throw 'Uncompleted disjunction expression'";
     }
     catch (const std::string &exception)
     {
-        ASSERT_EQ("Missing expression before ';'.", exception);
+        ASSERT_EQ("Uncompleted disjunction expression", exception);
     }
 
     try
     {
-        MatchingExp *m = new MatchingExp(new Atom("tom"), new Atom("tom"));
-        expFactory.createOrExp(m, nullptr);
-        FAIL() << "It should throw 'Missing expression after ';'.'";
+        expFactory.createOrExp(nullptr, new MatchingExp(new Atom("a"), new Atom("b")));
+        FAIL() << "It should throw 'Uncompleted disjunction expression'";
     }
     catch (const std::string &exception)
     {
-        ASSERT_EQ("Missing expression after ';'.", exception);
+        ASSERT_EQ("Uncompleted disjunction expression", exception);
+    }
+
+    try
+    {
+        expFactory.createOrExp(nullptr, nullptr);
+        FAIL() << "It should throw 'Uncompleted disjunction expression'";
+    }
+    catch (const std::string &exception)
+    {
+        ASSERT_EQ("Uncompleted disjunction expression", exception);
     }
 }
 

@@ -23,15 +23,15 @@ public:
   Exp *getExpTree();
 
 private:
-  FRIEND_TEST(expBuilder, addTermNode);
-  FRIEND_TEST(expBuilder, addOperatorNode);
-  FRIEND_TEST(expBuilder, buildExpTree);
-  FRIEND_TEST(expBuilder, getExpTree);
-  FRIEND_TEST(expBuilder, tryToCreateExpression);
-  FRIEND_TEST(expBuilder, createMatchingExpression);
-  FRIEND_TEST(expBuilder, createAndExpression);
-  FRIEND_TEST(expBuilder, createOrExpression);
-  FRIEND_TEST(expBuilder, stackException);
+  FRIEND_TEST(ExpBuilder, addTermNode);
+  FRIEND_TEST(ExpBuilder, addOperatorNode);
+  FRIEND_TEST(ExpBuilder, buildExpTree);
+  FRIEND_TEST(ExpBuilder, getExpTree);
+  FRIEND_TEST(ExpBuilder, tryToCreateExpression);
+  FRIEND_TEST(ExpBuilder, createMatchingExpression);
+  FRIEND_TEST(ExpBuilder, createAndExpression);
+  FRIEND_TEST(ExpBuilder, createOrExpression);
+  FRIEND_TEST(ExpBuilder, stackException);
 
   void tryToCreateExpression(string newOp);
   void createExpression();

@@ -48,4 +48,19 @@ TEST_F(TermFactoryTest, createStructure)
     ASSERT_EQ(1, termFactory->_structureTable.size());
 }
 
+TEST_F(TermFactoryTest, createStructureException)
+{
+    Atom *functor = nullptr;
+    Atom *arg = termFactory->createAtom("tom");
+    try
+    {
+        Structure *s = termFactory->createStructure(functor, {arg});
+        FAIL() << "It should throw 'Nonvalid functor of structure'";
+    }
+    catch (const string &exception)
+    {
+        ASSERT_EQ("Nonvalid functor of structure", exception);
+    }
+}
+
 #endif

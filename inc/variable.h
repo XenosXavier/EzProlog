@@ -1,6 +1,7 @@
 #ifndef VARIABLE_H
 #define VARIABLE_H
 #include "simpleObject.h"
+#include <gtest/gtest_prod.h>
 #include <vector>
 using std::vector;
 
@@ -13,20 +14,31 @@ using std::vector;
 class Variable : public SimpleObject
 {
 public:
-  Variable(string symbol);
+  Variable(string symbol, int age);
   string value();
   bool match(Term *term);
-  bool hasCycle(Term *term);
-  bool matchVariable(Variable *other);
-  void linkSharedVariables(Variable *myHead, Variable *otherHead, Term *instance);
-  vector<Variable *> createSharedVariables(Variable *head, Variable *otherHead);
-  Variable *lastSharedVariable();
   Variable *getVariable();
-  Variable *convertInstanceToVariable();
+  int age();
   Term *instance();
 
 private:
+  FRIEND_TEST(Variable, cycleByItself);
+  FRIEND_TEST(Variable, cycleByInstance);
+  FRIEND_TEST(Variable, matchVariable);
+  FRIEND_TEST(Variable, linkSharedVariables);
+  FRIEND_TEST(Variable, createSharedVariables);
+  FRIEND_TEST(Variable, lastSharedVariable);
+  FRIEND_TEST(Variable, convertInstanceToVariable);
+
+  bool hasCycle(Term *term);
+  bool matchVariable(Variable *other);
+  void linkSharedVariables(Variable *head, Variable *otherHead, Term *instance);
+  vector<Variable *> createSharedVariables(Variable *head, Variable *otherHead);
+  Variable *lastSharedVariable();
+  Variable *convertInstanceToVariable();
+
   bool _hasVisited;
+  int _age;
   Term *_instance;
   Variable *_head;
 };

@@ -2,37 +2,42 @@
 #define UT_ATOM_H
 #include "../inc/atom.h"
 
-TEST(atom, symbol)
+TEST(Atom, symbol)
 {
-    Atom tom("tom");
-    ASSERT_EQ("tom", tom.symbol());
+    Atom atom("tom");
+    ASSERT_EQ("tom", atom.symbol());
 }
 
-TEST(atom, value)
+TEST(Atom, value)
 {
-    Atom tom("tom");
-    ASSERT_EQ("tom", tom.symbol());
+    Atom atom("tom");
+    ASSERT_EQ("tom", atom.value());
 }
 
-TEST(atom, match)
+TEST(Atom, matchSuccess)
 {
-    Atom tom("tom");
-    Atom jerry("jerry");
-    Atom anotherTom("tom");
-    ASSERT_FALSE(tom.match(&jerry));
-    ASSERT_TRUE(tom.match(&anotherTom));
+    Atom atom("tom");
+    Atom other("tom");
+    ASSERT_TRUE(atom.match(&other));
 }
 
-TEST(atom, getStructure)
+TEST(Atom, matchFail)
 {
-    Atom tom("tom");
-    ASSERT_FALSE(tom.getStructure());
+    Atom atom("tom");
+    Atom other("jerry");
+    ASSERT_FALSE(atom.match(&other));
 }
 
-TEST(atom, getVariable)
+TEST(Atom, getStructure)
 {
-    Atom tom("tom");
-    ASSERT_FALSE(tom.getVariable());
+    Atom atom("tom");
+    ASSERT_EQ(nullptr, atom.getStructure());
+}
+
+TEST(Atom, getVariable)
+{
+    Atom atom("tom");
+    ASSERT_EQ(nullptr, atom.getVariable());
 }
 
 #endif

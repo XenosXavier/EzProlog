@@ -16,24 +16,24 @@ class PrologUtilsTest : public ::testing::Test
 
 TEST_F(PrologUtilsTest, isSpecialChar)
 {
-    string context = "#$&*+-./:<->?@^~\\";
-    for (int i = 0; i < context.length(); i++)
-        ASSERT_TRUE(prologUtils->isSpecialChar(context[i]));
+    string content = "#$&*+-./:<->?@^~\\";
+    for (int i = 0; i < content.length(); i++)
+        ASSERT_TRUE(prologUtils->isSpecialChar(content[i]));
 }
 
 TEST_F(PrologUtilsTest, isOperator)
 {
-    string context = "=,;";
-    for (int i = 0; i < context.length(); i++)
-        ASSERT_TRUE(prologUtils->isOperator(string(1, context[i])));
+    string content = "=,;";
+    for (int i = 0; i < content.length(); i++)
+        ASSERT_TRUE(prologUtils->isOperator(string(1, content[i])));
 }
 
 TEST_F(PrologUtilsTest, getOpPriority)
 {
     int priority[] = {700, 1000, 1100};
-    string context = "=,;";
-    for (int i = 0; i < context.length(); i++)
-        ASSERT_EQ(priority[i], prologUtils->getOpPriority(string(1, context[i])));
+    string content = "=,;";
+    for (int i = 0; i < content.length(); i++)
+        ASSERT_EQ(priority[i], prologUtils->getOpPriority(string(1, content[i])));
 }
 
 #endif

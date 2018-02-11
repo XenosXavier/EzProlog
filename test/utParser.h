@@ -2,7 +2,7 @@
 #define UT_PARSER_H
 #include "../inc/parser.h"
 
-TEST(parser, createTerm)
+TEST(Parser, createTerm)
 {
     Scanner scanner("a 0.1 X s() s(a, b) [] [a, b] [a|b]");
     ExpBuilder expBuilder;
@@ -25,7 +25,7 @@ TEST(parser, createTerm)
     ASSERT_EQ(".(a, b)", parser.createTerm()->symbol());
 }
 
-TEST(parser, createAtomOrCompound)
+TEST(Parser, createAtomOrCompound)
 {
     Scanner scanner("a f(a, b)");
     ExpBuilder expBuilder;
@@ -36,7 +36,7 @@ TEST(parser, createAtomOrCompound)
     ASSERT_EQ("f(a, b)", parser.createAtomOrCompound()->symbol());
 }
 
-TEST(parser, createParenthesesCompound)
+TEST(Parser, createParenthesesCompound)
 {
     Scanner scanner("(a, b)");
     ExpBuilder expBuilder;
@@ -44,7 +44,7 @@ TEST(parser, createParenthesesCompound)
     ASSERT_EQ("s(a, b)", parser.createParenthesesCompound(new Atom("s"))->symbol());
 }
 
-TEST(parser, missingRightParentheses)
+TEST(Parser, missingRightParentheses)
 {
     Scanner scanner("(a, b");
     ExpBuilder expBuilder;
@@ -60,7 +60,7 @@ TEST(parser, missingRightParentheses)
     }
 }
 
-TEST(parser, createBracketsCompound)
+TEST(Parser, createBracketsCompound)
 {
     Scanner scanner("[a, b]");
     ExpBuilder expBuilder;
@@ -69,7 +69,7 @@ TEST(parser, createBracketsCompound)
     ASSERT_EQ(".(a, .(b, []))", parser.createBracketsCompound()->symbol());
 }
 
-TEST(parser, missingRightBrackets)
+TEST(Parser, missingRightBrackets)
 {
     Scanner scanner("[a, b");
     ExpBuilder expBuilder;
@@ -77,15 +77,15 @@ TEST(parser, missingRightBrackets)
     try
     {
         parser.createBracketsCompound();
-        FAIL() << "It should throw 'Unexpected tail token .'";
+        FAIL() << "It should throw 'Unexpected tail token of compound.'";
     }
     catch (const std::string &exception)
     {
-        ASSERT_EQ("Unexpected tail token .", exception);
+        ASSERT_EQ("Unexpected tail token of compound.", exception);
     }
 }
 
-TEST(parser, createArgs)
+TEST(Parser, createArgs)
 {
     Scanner scanner("a, 0.1, X, s(), [], s(a, b), [a, b]");
     ExpBuilder expBuilder;
@@ -101,7 +101,7 @@ TEST(parser, createArgs)
     ASSERT_EQ(".(a, .(b, []))", args[6]->symbol());
 }
 
-TEST(parser, createTail)
+TEST(Parser, createTail)
 {
     Scanner scanner("]|b");
     ExpBuilder expBuilder;
@@ -114,15 +114,15 @@ TEST(parser, createTail)
     try
     {
         parser.createTail();
-        FAIL() << "It should throw 'Unexpected tail token  .'";
+        FAIL() << "It should throw 'Unexpected tail token of compound.'";
     }
     catch (const std::string &exception)
     {
-        ASSERT_EQ("Unexpected tail token .", exception);
+        ASSERT_EQ("Unexpected tail token of compound.", exception);
     }
 }
 
-TEST(parser, hasNextArg)
+TEST(Parser, hasNextArg)
 {
     Scanner scanner("a)]|");
     ExpBuilder expBuilder;
@@ -139,7 +139,7 @@ TEST(parser, hasNextArg)
     ASSERT_FALSE(parser.hasNextArg());
 }
 
-TEST(parser, isTermToken)
+TEST(Parser, isTermToken)
 {
     Scanner scanner("a 1 X [ .");
     ExpBuilder expBuilder;
@@ -156,7 +156,7 @@ TEST(parser, isTermToken)
     ASSERT_FALSE(parser.isTermToken());
 }
 
-TEST(parser, parseMatchingExp)
+TEST(Parser, parseMatchingExp)
 {
     Scanner scanner("X=tom.");
     ExpBuilder expBuilder;
@@ -166,7 +166,7 @@ TEST(parser, parseMatchingExp)
     ASSERT_TRUE(root->evaluate());
 }
 
-TEST(parser, parseAndExp)
+TEST(Parser, parseAndExp)
 {
     Scanner scanner("X=tom, X=1.");
     ExpBuilder expBuilder;
@@ -176,7 +176,7 @@ TEST(parser, parseAndExp)
     ASSERT_FALSE(root->evaluate());
 }
 
-TEST(parser, parseOrExp)
+TEST(Parser, parseOrExp)
 {
     Scanner scanner("X=tom; X=1.");
     ExpBuilder expBuilder;
@@ -186,7 +186,7 @@ TEST(parser, parseOrExp)
     ASSERT_TRUE(root->evaluate());
 }
 
-TEST(parser, missDot)
+TEST(Parser, missDot)
 {
     Scanner scanner("X=tom");
     ExpBuilder expBuilder;
@@ -202,7 +202,7 @@ TEST(parser, missDot)
     }
 }
 
-TEST(parser, undefineToken)
+TEST(Parser, undefineToken)
 {
     Scanner scanner("}.");
     ExpBuilder expBuilder;

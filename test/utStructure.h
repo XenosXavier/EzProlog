@@ -4,41 +4,41 @@
 #include "../inc/number.h"
 #include "../inc/variable.h"
 
-TEST(structure, symbol)
+TEST(Structure, symbol)
 {
     Atom functor("s");
     Atom tom("tom");
     Number num(-0.1);
-    Variable X("X");
+    Variable X("X", 0);
     Structure s(&functor, {&tom, &num, &X});
     ASSERT_EQ("s(tom, -0.1, X)", s.symbol());
 }
 
-TEST(structure, value)
+TEST(Structure, value)
 {
     Atom functor("s");
     Atom tom("tom");
     Number num(-0.1);
-    Variable X("X");
+    Variable X("X", 0);
     X.match(&tom);
     Structure s(&functor, {&tom, &num, &X});
     ASSERT_EQ("s(tom, -0.1, tom)", s.value());
 }
 
-TEST(structure, nestedSymbol)
+TEST(Structure, nestedSymbol)
 {
-    // empty structure, s()
+    // empty Structure, s()
     Structure s0(new Atom("s"), {});
-    // sub structure in the middle of args, s(tom, s(), jerry)
+    // sub Structure in the middle of args, s(tom, s(), jerry)
     Structure s1(new Atom("s"), {new Atom("tom"), &s0, new Atom("jerry")});
-    // sub structure at the beginning of args, s(s(tom, s(), jerry), jerry)
+    // sub Structure at the beginning of args, s(s(tom, s(), jerry), jerry)
     Structure s2(new Atom("s"), {&s1, new Atom("jerry")});
-    // sub structure at the end of args, s(tom, s(s(tom, s(), jerry), jerry))
+    // sub Structure at the end of args, s(tom, s(s(tom, s(), jerry), jerry))
     Structure s3(new Atom("s"), {new Atom("tom"), &s2});
     ASSERT_EQ("s(tom, s(s(tom, s(), jerry), jerry))", s3.symbol());
 }
 
-TEST(structure, matchConstant)
+TEST(Structure, matchConstant)
 {
     Structure s0(new Atom("s"), {});
     Atom s1("s");
@@ -47,68 +47,67 @@ TEST(structure, matchConstant)
     ASSERT_FALSE(s0.match(&n1));
 }
 
-TEST(structure, matchVariable)
+TEST(Structure, matchVariable)
 {
     Structure s0(new Atom("s"), {});
-    Variable X("X");
+    Variable X("X", 0);
     ASSERT_TRUE(s0.match(&X));
 }
 
-TEST(structure, matchFunctor)
+TEST(Structure, matchFailByDifferentFunctor)
 {
     Structure s0(new Atom("s"), {});
     Structure s1(new Atom("f"), {});
     ASSERT_FALSE(s0.match(&s1));
 }
 
-TEST(structure, matchArity)
+TEST(Structure, matchFailByDifferentArity)
 {
     Structure s0(new Atom("s"), {new Atom("tom")});
     Structure s1(new Atom("s"), {});
     ASSERT_FALSE(s0.match(&s1));
 }
 
-TEST(structure, matchArgs)
+TEST(Structure, matchFailByDifferentArgument)
 {
     Structure s0(new Atom("s"), {new Atom("tom")});
     Structure s1(new Atom("s"), {new Atom("tim")});
     ASSERT_FALSE(s0.match(&s1));
 }
 
-TEST(structure, matchSuccess)
+TEST(Structure, matchSuccess)
 {
     Structure s0(new Atom("s"), {new Atom("tom")});
     Structure s1(new Atom("s"), {new Atom("tom")});
     ASSERT_TRUE(s0.match(&s1));
 }
 
-TEST(structure, getStructure)
+TEST(Structure, getStructure)
 {
     Structure s(new Atom("s"), {});
-    ASSERT_TRUE(s.getStructure());
     ASSERT_EQ(&s, s.getStructure());
 }
 
-TEST(structure, getVariable)
+TEST(Structure, getVariable)
 {
     Structure s(new Atom("s"), {});
-    ASSERT_FALSE(s.getVariable());
+    ASSERT_EQ(nullptr, s.getVariable());
 }
 
-TEST(structure, functor)
+TEST(Structure, functor)
 {
     Structure s(new Atom("s"), {});
     ASSERT_EQ("s", s.functor()->symbol());
 }
 
-TEST(structure, arg)
+TEST(Structure, arg)
 {
     Structure s(new Atom("s"), {new Atom("tom"), new Atom("jerry")});
     ASSERT_EQ("tom", s.arg(0)->symbol());
     ASSERT_EQ("jerry", s.arg(1)->symbol());
 }
 
-TEST(structure, argException)
+TEST(Structure, argException)
 {
     Structure s(new Atom("s"), {});
     ASSERT_THROW(s.arg(0), std::string);
@@ -119,19 +118,19 @@ TEST(structure, argException)
     }
     catch (const std::string &exception)
     {
-        ASSERT_EQ("The index of structure arugments is out of range.", exception);
+        ASSERT_EQ("The index of structure arugments is out of range", exception);
     }
 }
 
-TEST(structure, arity)
+TEST(Structure, arity)
 {
     Structure s(new Atom("s"), {new Atom("tom"), new Atom("jerry")});
     ASSERT_EQ(2, s.arity());
 }
 
-TEST(structure, output)
+TEST(Structure, output)
 {
-    Variable X("X");
+    Variable X("X", 0);
     Atom tom("tom");
     X.match(&tom);
     Structure s(new Atom("s"), {&X});
@@ -139,9 +138,9 @@ TEST(structure, output)
     ASSERT_EQ("s(tom)", s.output(Structure::OutputMode::value));
 }
 
-TEST(structure, argOutput)
+TEST(Structure, argOutput)
 {
-    Variable X("X");
+    Variable X("X", 0);
     Atom tom("tom");
     X.match(&tom);
     Structure s(new Atom("s"), {&X});

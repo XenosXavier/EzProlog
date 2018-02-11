@@ -50,7 +50,7 @@ Term *Structure::arg(int index) const
 {
     if (index < _args.size())
         return _args[index];
-    throw string("The index of structure arugments is out of range.");
+    throw string("The index of structure arugments is out of range");
 }
 
 // Get the size of arugment.

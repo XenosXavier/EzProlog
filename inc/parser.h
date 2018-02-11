@@ -21,16 +21,16 @@ public:
   vector<Variable *> clauseVariables(int index);
 
 private:
-  FRIEND_TEST(parser, createTerm);
-  FRIEND_TEST(parser, createAtomOrCompound);
-  FRIEND_TEST(parser, createParenthesesCompound);
-  FRIEND_TEST(parser, missingRightParentheses);
-  FRIEND_TEST(parser, createBracketsCompound);
-  FRIEND_TEST(parser, missingRightBrackets);
-  FRIEND_TEST(parser, createArgs);
-  FRIEND_TEST(parser, createTail);
-  FRIEND_TEST(parser, hasNextArg);
-  FRIEND_TEST(parser, isTermToken);
+  FRIEND_TEST(Parser, createTerm);
+  FRIEND_TEST(Parser, createAtomOrCompound);
+  FRIEND_TEST(Parser, createParenthesesCompound);
+  FRIEND_TEST(Parser, missingRightParentheses);
+  FRIEND_TEST(Parser, createBracketsCompound);
+  FRIEND_TEST(Parser, missingRightBrackets);
+  FRIEND_TEST(Parser, createArgs);
+  FRIEND_TEST(Parser, createTail);
+  FRIEND_TEST(Parser, hasNextArg);
+  FRIEND_TEST(Parser, isTermToken);
 
   void createTermFactory();
   void updateToken();

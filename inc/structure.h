@@ -24,8 +24,9 @@ public:
   int arity() const;
 
 private:
-  FRIEND_TEST(structure, output);
-  FRIEND_TEST(structure, argOutput);
+  FRIEND_TEST(Structure, output);
+  FRIEND_TEST(Structure, argOutput);
+
   enum class OutputMode
   {
     symbol,
