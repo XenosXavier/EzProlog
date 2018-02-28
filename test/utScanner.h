@@ -36,7 +36,7 @@ TEST_F(ScannerTest, extractAtomSQ)
     Scanner scanner("'This is a atom token'");
     token = scanner.extractAtomSQ();
     ASSERT_EQ(prologUtils->ATOM, token.first);
-    ASSERT_EQ("This is a atom token", token.second);
+    ASSERT_EQ("'This is a atom token'", token.second);
 }
 
 TEST_F(ScannerTest, extractNumber)
@@ -103,24 +103,36 @@ TEST_F(ScannerTest, nextChar)
     ASSERT_EQ('\0', scanner.nextChar());
 }
 
-TEST_F(ScannerTest, isNumberChar)
+TEST_F(ScannerTest, isCharacter)
+{
+    Scanner scanner("a1_$");
+    ASSERT_TRUE(scanner.isCharacter());
+    scanner.extractChar();
+    ASSERT_TRUE(scanner.isCharacter());
+    scanner.extractChar();
+    ASSERT_TRUE(scanner.isCharacter());
+    scanner.extractChar();
+    ASSERT_FALSE(scanner.isCharacter());
+}
+
+TEST_F(ScannerTest, isNumber)
 {
     Scanner scanner("1. 1.1.1");
     bool hasPoint = false;
-    ASSERT_TRUE(scanner.isNumberChar(hasPoint));
+    ASSERT_TRUE(scanner.isNumber(hasPoint));
     scanner.extractChar();
-    ASSERT_FALSE(scanner.isNumberChar(hasPoint));
+    ASSERT_FALSE(scanner.isNumber(hasPoint));
     scanner.extractChar();
     scanner.skipLeadingWhiteSpace();
 
     hasPoint = false;
-    ASSERT_TRUE(scanner.isNumberChar(hasPoint));
+    ASSERT_TRUE(scanner.isNumber(hasPoint));
     scanner.extractChar();
-    ASSERT_TRUE(scanner.isNumberChar(hasPoint));
+    ASSERT_TRUE(scanner.isNumber(hasPoint));
     scanner.extractChar();
-    ASSERT_TRUE(scanner.isNumberChar(hasPoint));
+    ASSERT_TRUE(scanner.isNumber(hasPoint));
     scanner.extractChar();
-    ASSERT_FALSE(scanner.isNumberChar(hasPoint));
+    ASSERT_FALSE(scanner.isNumber(hasPoint));
     scanner.extractChar();
 }
 
@@ -143,7 +155,7 @@ TEST_F(ScannerTest, nextToken)
     ASSERT_EQ(".", token.second);
     token = scanner.nextToken();
     ASSERT_EQ(prologUtils->ATOM, token.first);
-    ASSERT_EQ("a b", token.second);
+    ASSERT_EQ("'a b'", token.second);
     token = scanner.nextToken();
     ASSERT_EQ(prologUtils->VAR, token.first);
     ASSERT_EQ("X", token.second);

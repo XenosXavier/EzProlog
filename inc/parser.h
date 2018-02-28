@@ -22,10 +22,10 @@ public:
 
 private:
   FRIEND_TEST(Parser, createTerm);
-  FRIEND_TEST(Parser, createAtomOrCompound);
-  FRIEND_TEST(Parser, createParenthesesCompound);
-  FRIEND_TEST(Parser, missingRightParentheses);
-  FRIEND_TEST(Parser, createBracketsCompound);
+  FRIEND_TEST(Parser, createAtomOrStructure);
+  FRIEND_TEST(Parser, createStructure);
+  FRIEND_TEST(Parser, missingRightParenthesis);
+  FRIEND_TEST(Parser, createList);
   FRIEND_TEST(Parser, missingRightBrackets);
   FRIEND_TEST(Parser, createArgs);
   FRIEND_TEST(Parser, createTail);
@@ -35,9 +35,9 @@ private:
   void createTermFactory();
   void updateToken();
   Term *createTerm();
-  Term *createAtomOrCompound();
-  Term *createParenthesesCompound(Atom *functor);
-  Term *createBracketsCompound();
+  Term *createAtomOrStructure();
+  Term *createStructure(Atom *functor);
+  Term *createList();
   vector<Term *> createArgs();
   Term *createTail();
   bool hasNextArg();

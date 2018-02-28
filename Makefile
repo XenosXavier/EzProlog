@@ -1,6 +1,6 @@
 CXX = clang++
 CXXFLAGS = -std=c++11 -glldb
-LIBS = -lgtest -lpthread -lcurses
+LIBS = -lgtest -lpthread
  
 ifeq ($(OS), Windows_NT)
     CXX = g++
@@ -11,18 +11,26 @@ endif
 SOURCE_DIR = src
 BUILD_DIR = build
 EXE_FILE_DIR = .
-EXE_FILE_NAME = main
+EXE_FILE_NAME = ezProlog
+TEST_FILE_DIR = .
+TEST_FILE_NAME = ezPrologTest
 
 SOURCES = $(wildcard $(SOURCE_DIR)/*.cpp)
 OBJECTS = $(patsubst $(SOURCE_DIR)/%.cpp,$(BUILD_DIR)/%.o, $(SOURCES))
 DEPENDS = ${OBJECTS:.o=.d}
- 
-all: preprocess $(OBJECTS)
-	$(CXX) -o $(EXE_FILE_DIR)/$(EXE_FILE_NAME) $(OBJECTS) $(LIBS)
+TEST_OBJECTS = $(filter-out $(BUILD_DIR)/$(EXE_FILE_NAME).o, $(OBJECTS))
+EXE_OBJECTS = $(filter-out $(BUILD_DIR)/$(TEST_FILE_NAME).o, $(OBJECTS))
 
-preprocess:
+all: setup program unit-test
+
+setup:
 	mkdir -p $(BUILD_DIR)
-	
+
+program: $(EXE_OBJECTS)
+	$(CXX) -o $(EXE_FILE_DIR)/$(EXE_FILE_NAME) $(EXE_OBJECTS) $(LIBS)
+
+unit-test: $(TEST_OBJECTS)
+	$(CXX) -o $(TEST_FILE_DIR)/$(TEST_FILE_NAME) $(TEST_OBJECTS) $(LIBS)
 
 $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -MMD -c $< -o $@
@@ -31,11 +39,12 @@ $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.cpp
  
 clean:
 	$(RM) $(EXE_FILE_DIR)/$(EXE_FILE_NAME)
+	$(RM) $(TEST_FILE_DIR)/$(TEST_FILE_NAME)
 	$(RM) $(BUILD_DIR)/*.d
 	$(RM) $(BUILD_DIR)/*.o
  
 test: all
-	$(EXE_FILE_DIR)/$(EXE_FILE_NAME)
+	$(TEST_FILE_DIR)/$(TEST_FILE_NAME)
  
 test.%: all
-	$(EXE_FILE_DIR)/$(EXE_FILE_NAME) --gtest_filter=$(or $(word 2,$(subst ., ,$@)),$(value 2)).*
+	$(TEST_FILE_DIR)/$(TEST_FILE_NAME) --gtest_filter=$(word 2, $(subst ., ,$@)).*

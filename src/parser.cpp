@@ -8,10 +8,9 @@ Parser::Parser(Scanner &scanner, ExpBuilder &expBuilder) : _scanner(scanner), _e
     createTermFactory();
 }
 
-// Parse the token from scanner and add it into
-// expression builder with corresponding node.
-// Build the expression tree after all nodes has
-// been added into expression builder.
+// Extracts the token from scanner and add it into expression
+// builder, then builds the expression tree after all nodes
+// has been added into expression builder.
 void Parser::parse()
 {
     for (updateToken(); !isEndOfQuery(); updateToken())
@@ -66,43 +65,41 @@ void Parser::updateToken()
 Term *Parser::createTerm()
 {
     if (_token.first == _prologUtils->ATOM)
-        return createAtomOrCompound();
+        return createAtomOrStructure();
     else if (_token.first == _prologUtils->NUMBER)
         return _termFactory->createNumber(stod(_token.second));
     else if (_token.first == _prologUtils->VAR)
         return _termFactory->createVariable(_token.second);
     else if (_token.first == '[')
-        return createBracketsCompound();
+        return createList();
     else
         return nullptr;
 }
 
-// Create an atom or compound(structure) if getting an atom token.
-Term *Parser::createAtomOrCompound()
+// Create an atom or structure(compound) if the token name is 'ATOM'.
+Term *Parser::createAtomOrStructure()
 {
     Atom *atom = _termFactory->createAtom(_token.second);
     if (_scanner.currentChar() == '(')
-        return createParenthesesCompound(atom);
+        return createStructure(atom);
     return atom;
 }
 
-// Create the parentheses compound(structure).
-// Parentheses compound: functor(arg0, arg1, ..., argn).
-Term *Parser::createParenthesesCompound(Atom *functor)
+// Create the structure.
+Term *Parser::createStructure(Atom *functor)
 {
-    updateToken();                      // Move to left parentheses.
-    vector<Term *> args = createArgs(); // Create the compound arguments.
-    if (_token.first == ')')            // Create structure if last token is ')'.
+    updateToken();                      // Move to left parenthesis.
+    vector<Term *> args = createArgs(); // Create the structure arguments.
+    if (_token.first == ')')            // Create structure if the last token is ')'.
         return _termFactory->createStructure(functor, args);
     // Throw exception if the token is not ')'.
     throw string("Unexpected " + _token.second + " before ')'.");
 }
 
-// Create the brackets compound(list or structure).
-// Brackets compound: .(head, tail) = [head|tail]
+// Create the list.
 // Example: (1) [a, b] = .(a, .(b, [])) <- tail recursion structure
 //          (2) [a|b]  = .(a, b)
-Term *Parser::createBracketsCompound()
+Term *Parser::createList()
 {
     vector<Term *> args = createArgs();
     Term *tail = createTail(); // Create the tail term.
@@ -116,28 +113,28 @@ Term *Parser::createBracketsCompound()
     throw string("Unexpected " + _token.second + " before ']'.");
 }
 
-// Create compound arugments.
+// Create structure arugments.
 vector<Term *> Parser::createArgs()
 {
     vector<Term *> args;
-    // First update to ignore left parentheses or brackets.
+    // First update to ignore left parenthesis or brackets.
     for (updateToken(); hasNextArg(); updateToken())
         if (isTermToken())
             args.push_back(createTerm());
     return args;
 }
 
-// Create brackets compound tail.
+// Creates the tail of rightward-nest structure.
 Term *Parser::createTail()
 {
     if (_token.first != ']' && _token.first != '|')
         throw string("Unexpected tail token " + _token.second + "of compound.");
 
-    if (_token.first == ']') // Return empty list '[]' if token is ']'.
+    if (_token.first == ']') // Returns empty list '[]' if token is ']'.
         return _termFactory->createAtom("[]");
     updateToken();             // Ignore '|' token.
     Term *tail = createTerm(); // Create tail term.
-    updateToken();             // Move to the end of compound.
+    updateToken();             // Move to next token.
     return tail;
 }
 
@@ -162,12 +159,10 @@ bool Parser::isEndOfQuery()
     return (_token.first == '.' || _token.first == _prologUtils->EOS);
 }
 
-// Check if query is legal or not.
+// Checks if query is legal or not.
 bool Parser::isLegalQuery()
 {
     if (_token.first != '.') // Throw exception if the last char is not '.'.
         throw string("Missing token '.' at the end of clause.");
-    else if (_scanner.nextChar() != '\0') // Throw exception if char is not the last one.
-        throw string("Token '.' is not the end of clause");
     return true;
 }

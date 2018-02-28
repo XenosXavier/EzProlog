@@ -34,7 +34,8 @@ private:
   FRIEND_TEST(ScannerTest, position);
   FRIEND_TEST(ScannerTest, currentChar);
   FRIEND_TEST(ScannerTest, nextChar);
-  FRIEND_TEST(ScannerTest, isNumberChar);
+  FRIEND_TEST(ScannerTest, isCharacter);
+  FRIEND_TEST(ScannerTest, isNumber);
   FRIEND_TEST(ScannerTest, isEndChar);
 
   int skipLeadingWhiteSpace();
@@ -44,7 +45,8 @@ private:
   pair<int, string> extractNumber();
   pair<int, string> extractVariable();
   pair<int, string> extractChar();
-  bool isNumberChar(bool &hasPoint);
+  bool isCharacter();
+  bool isNumber(bool &hasPoint);
   bool isEndChar();
 
   string _content;

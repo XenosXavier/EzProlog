@@ -25,33 +25,33 @@ TEST(Parser, createTerm)
     ASSERT_EQ(".(a, b)", parser.createTerm()->symbol());
 }
 
-TEST(Parser, createAtomOrCompound)
+TEST(Parser, createAtomOrStructure)
 {
     Scanner scanner("a f(a, b)");
     ExpBuilder expBuilder;
     Parser parser(scanner, expBuilder);
     parser.updateToken();
-    ASSERT_EQ("a", parser.createAtomOrCompound()->symbol());
+    ASSERT_EQ("a", parser.createAtomOrStructure()->symbol());
     parser.updateToken();
-    ASSERT_EQ("f(a, b)", parser.createAtomOrCompound()->symbol());
+    ASSERT_EQ("f(a, b)", parser.createAtomOrStructure()->symbol());
 }
 
-TEST(Parser, createParenthesesCompound)
+TEST(Parser, createStructure)
 {
     Scanner scanner("(a, b)");
     ExpBuilder expBuilder;
     Parser parser(scanner, expBuilder);
-    ASSERT_EQ("s(a, b)", parser.createParenthesesCompound(new Atom("s"))->symbol());
+    ASSERT_EQ("s(a, b)", parser.createStructure(new Atom("s"))->symbol());
 }
 
-TEST(Parser, missingRightParentheses)
+TEST(Parser, missingRightParenthesis)
 {
     Scanner scanner("(a, b");
     ExpBuilder expBuilder;
     Parser parser(scanner, expBuilder);
     try
     {
-        parser.createParenthesesCompound(new Atom("s"));
+        parser.createStructure(new Atom("s"));
         FAIL() << "It should throw 'Unexpected  before ')'.'";
     }
     catch (const std::string &exception)
@@ -60,13 +60,13 @@ TEST(Parser, missingRightParentheses)
     }
 }
 
-TEST(Parser, createBracketsCompound)
+TEST(Parser, createList)
 {
     Scanner scanner("[a, b]");
     ExpBuilder expBuilder;
     Parser parser(scanner, expBuilder);
     parser.updateToken();
-    ASSERT_EQ(".(a, .(b, []))", parser.createBracketsCompound()->symbol());
+    ASSERT_EQ(".(a, .(b, []))", parser.createList()->symbol());
 }
 
 TEST(Parser, missingRightBrackets)
@@ -76,7 +76,7 @@ TEST(Parser, missingRightBrackets)
     Parser parser(scanner, expBuilder);
     try
     {
-        parser.createBracketsCompound();
+        parser.createList();
         FAIL() << "It should throw 'Unexpected tail token of compound.'";
     }
     catch (const std::string &exception)

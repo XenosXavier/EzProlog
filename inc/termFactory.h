@@ -19,9 +19,9 @@ class TermFactory
   friend class TermFactoryTest;
 
 public:
-  Atom *createAtom(string key);
+  Atom *createAtom(string symbol);
   Number *createNumber(double value);
-  Variable *createVariable(string key);
+  Variable *createVariable(string symbol);
   Structure *createStructure(Atom *functor, vector<Term *> args);
   map<string, Variable *> variableTable();
 

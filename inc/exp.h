@@ -23,6 +23,8 @@ public:
 
 protected:
   Exp(string symbol);
+
+private:
   string _symbol;
 };
 

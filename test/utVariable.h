@@ -40,7 +40,7 @@ TEST(Variable, instantiateStructure)
     ASSERT_EQ("s()", X.value());
 }
 
-TEST(Variable, firstMatch)
+TEST(Variable, matchWithoutInstance)
 {
     Variable X("X", 0);
     Atom atom("tom");

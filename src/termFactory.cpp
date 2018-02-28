@@ -2,11 +2,11 @@
 #include <sstream>
 
 // Create an atom.
-Atom *TermFactory::createAtom(string key)
+Atom *TermFactory::createAtom(string symbol)
 {
-    if (_atomTable.find(key) == _atomTable.end())
-        _atomTable[key] = new Atom(key);
-    return _atomTable[key];
+    if (_atomTable.find(symbol) == _atomTable.end())
+        _atomTable[symbol] = new Atom(symbol);
+    return _atomTable[symbol];
 }
 
 // Create a number.
@@ -21,11 +21,11 @@ Number *TermFactory::createNumber(double value)
 }
 
 // Create a variable.
-Variable *TermFactory::createVariable(string key)
+Variable *TermFactory::createVariable(string symbol)
 {
-    if (_variableTable.find(key) == _variableTable.end())
-        _variableTable[key] = new Variable(key, _variableTable.size());
-    return _variableTable[key];
+    if (_variableTable.find(symbol) == _variableTable.end())
+        _variableTable[symbol] = new Variable(symbol, _variableTable.size());
+    return _variableTable[symbol];
 }
 
 // create a structure.

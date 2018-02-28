@@ -11,14 +11,14 @@ pair<int, string> Scanner::nextToken()
         return pair<int, string>(_prologUtils->EOS, "");
     else if (isEndChar())
         return extractChar();
+    else if (isdigit(currentChar()) || (currentChar() == '-' && isdigit(nextChar())))
+        return extractNumber();
     else if (islower(currentChar()))
         return extractAtom();
     else if (_prologUtils->isSpecialChar(currentChar()))
         return extractAtomSC();
     else if (currentChar() == '\'')
         return extractAtomSQ();
-    else if (isdigit(currentChar()))
-        return extractNumber();
     else if (isupper(currentChar()) || currentChar() == '_')
         return extractVariable();
     else
@@ -38,7 +38,7 @@ int Scanner::skipLeadingWhiteSpace()
 pair<int, string> Scanner::extractAtom()
 {
     int begin = _position;
-    for (; isalnum(currentChar()) || isdigit(currentChar()) || currentChar() == '_'; _position++)
+    for (; isCharacter(); _position++)
         ;
     return pair<int, string>(_prologUtils->ATOM, _content.substr(begin, _position - begin));
 }
@@ -57,18 +57,20 @@ pair<int, string> Scanner::extractAtomSC()
 // Example: 'Do U Know Da Wai'.
 pair<int, string> Scanner::extractAtomSQ()
 {
-    int begin = ++_position;
-    _position = _content.find('\'', begin) + 1;
-    return pair<int, string>(_prologUtils->ATOM, _content.substr(begin, _position - begin - 1));
+    int begin = _position;
+    _position = _content.find('\'', begin + 1) + 1;
+    return pair<int, string>(_prologUtils->ATOM, _content.substr(begin, _position - begin));
 }
 
 // Extract the number.
-// Example: 1, 0.1.
+// Example: 1, 0.1, -0.1
 pair<int, string> Scanner::extractNumber()
 {
     int begin = _position;
     bool hasPoint = false;
-    for (; isNumberChar(hasPoint); _position++)
+    if (currentChar() == '-')
+        _position++;
+    for (; isNumber(hasPoint); _position++)
         ;
     return pair<int, string>(_prologUtils->NUMBER, _content.substr(begin, _position - begin));
 }
@@ -78,7 +80,7 @@ pair<int, string> Scanner::extractNumber()
 pair<int, string> Scanner::extractVariable()
 {
     int begin = _position;
-    for (; isdigit(currentChar()) || isalnum(currentChar()) || currentChar() == '_'; _position++)
+    for (; isCharacter(); _position++)
         ;
     return pair<int, string>(_prologUtils->VAR, _content.substr(begin, _position - begin));
 }
@@ -110,14 +112,23 @@ char Scanner::nextChar()
     return _content[_position + 1];
 }
 
-// Returns true if this character is a part of number.
-bool Scanner::isNumberChar(bool &hasPoint)
+// Returns true if current character is a port of atom or variable
+bool Scanner::isCharacter()
 {
-    if (isdigit(currentChar()))
+    char c = currentChar();
+    return (isdigit(c) || isalnum(c) || c == '_');
+}
+
+// Returns true if current character is a port of number
+bool Scanner::isNumber(bool &hasPoint)
+{
+    char c = currentChar();
+    if (isdigit(c))
         return true;
-    else if (!hasPoint && currentChar() == '.' && isdigit(nextChar()))
+    else if (!hasPoint && c == '.' && isdigit(nextChar()))
         return (hasPoint = true);
-    return false;
+    else
+        return false;
 }
 
 // Returns true if '.' character is the last one.
