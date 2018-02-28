@@ -98,7 +98,7 @@ In this example, we reference [iso prolog](http://fsl.cs.illinois.edu/images/9/9
 
 #### Atom
 
-A series of letters, digits, and/or underscores, beginning with a lowercase letter
+A series of letters, digits, and/or underscores, beginning with a lowercase letter
 
 ```
 ex: atom, a_t_o_m, atom123
@@ -194,14 +194,14 @@ false. (match fail, 'jan' is not equal to 'feb')
 true. (match success)
 ```
 ### Lexical Analysis and Parsing
-##### Lexical Analyzer
+#### Lexical Analyzer
 | lexeme                           | token-name | attribute-value    |
 | -------------------------------- | ---------- | ------------------ |
 | [Atom definition](#atom)         | Atom       | Symbol of atom     |
 | [Number definition](#number)     | Number     | Value of number    |
 | [Variable definition](#variable) | Var        | Symbol of variable |
 
-##### Grammar
+#### Grammar
 ><_query_> ::= <_disjunction expression_> < _disjunction expression'_> '.'
 <_disjunction expression_> ::= <_conjunction expression_> <_disjunction expression'_>
 <_disjunction expression'_> ::= ';' <_conjunction expression_> <_disjunction expression'_>^*^
@@ -222,7 +222,7 @@ true. (match success)
 <_uppercase letter_> ::= [A - Z] | _  
 <_specialchar_> ::= # | $ | & | * | + | - | . | / | : | < | - | > | ? | @ | ^ | ~ | \\
 
-##### Bottom-Up Parser
+#### Bottom-Up Parser
 Bottom-up parsing starts from the leaf nodes of a tree and works in upward direction till it reaches the root node. Here, we use a simple query, `A = 1, B = 2, C = 3; D = 4.`, to explain how the parser works in the following figures.
 
 | parse tree                              | build steps                              |
