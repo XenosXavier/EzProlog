@@ -66,7 +66,7 @@ make test
 
 under your project folder and then you should see the following result
 
-![unit test result](https://i.imgur.com/Xizn073.png "unit test result")
+![unit test result](https://i.imgur.com/PCzTA0G.png "unit test result")
 
 ### The Basics - Goal
 A query to the Prolog interpreter consists of one or more goals. For example, in
