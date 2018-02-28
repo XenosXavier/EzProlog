@@ -202,20 +202,20 @@ true. (match success)
 | [Variable definition](#variable) | Var        | Symbol of variable |
 
 #### Grammar
-><_query_> ::= <_disjunction expression_> < _disjunction expression'_> '.'
-<_disjunction expression_> ::= <_conjunction expression_> <_disjunction expression'_>
-<_disjunction expression'_> ::= ';' <_conjunction expression_> <_disjunction expression'_>^*^
-<_conjunction expression_> ::= <_matching expression_> <_conjunction expression'_>
-<_conjunction expression'_> ::= ',' <_matching expression_> <_conjunction expression'_>^*^
-<_matching expression_> ::= <_term_> '=' <_term_>
-<_structure_> ::= <_atom_> '(' <_terms_> ')'
-<_terms_> ::= <_term_>^*^  
-<_term_> ::= <_atom_> | <_number_> | <_variable_> | <_structure_>
-<_atom_> ::= <_lowercase letter_> <_string_> | <_specialchar_>^+^ | '<_string_>'  
-<_number_> ::= <_negative_>^?^<_digit_>^+^  
+<_query_> ::= <_disjunction expression_> < _disjunction expression'_> '.'  
+<_disjunction expression_> ::= <_conjunction expression_> <_disjunction expression'_>  
+<_disjunction expression'_> ::= ';' <_conjunction expression_> <_disjunction expression'_><sup> *</sup>  
+<_conjunction expression_> ::= <_matching expression_> <_conjunction expression'_>  
+<_conjunction expression'_> ::= ',' <_matching expression_> <_conjunction expression'_><sup> *</sup>  
+<_matching expression_> ::= <_term_> '=' <_term_>  
+<_structure_> ::= <_atom_> '(' <_terms_> ')'  
+<_terms_> ::= <_term_><sup> *</sup>  
+<_term_> ::= <_atom_> | <_number_> | <_variable_> | <_structure_>  
+<_atom_> ::= <_lowercase letter_> <_string_> | <_specialchar_><sup>+</sup> | '<_string_>'  
+<_number_> ::= <_negative_><sup>?</sup><_digit_><sup>+</sup>  
 <_variable_> ::= <_uppercase letter_> <_string_>  
-<_string_> ::= <_character_>^*^
-<_character_> ::= <_digit_> | <_lowercase letter_> | <_uppercase letter_>
+<_string_> ::= <_character_><sup> *</sup>  
+<_character_> ::= <_digit_> | <_lowercase letter_> | <_uppercase letter_>  
 <_negative_> ::= -  
 <_digit_> ::= [0 - 9]  
 <_lowercase letter_> ::= [a - z]  
